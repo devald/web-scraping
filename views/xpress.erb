@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Xpress TOP 10</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="bs-example" data-example-id="hoverable-table">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cím</th>
+          <th>Borító</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @films.each_with_index do |film, index| %>
+        <tr>
+          <th scope="row"><%= index.next %></th>
+          <td><%= film.at_css('.TOPszoveg').text %></td>
+          <td><img src="<%= film.at_css('.TOPkep img')['src'] %>"height="56"></td>
+          <% link = "#{film.at_css('a')['href'].sub('..', '')}" %>
+          <td><a href="<%= "#{@base_url}#{link}" %>">Link</a></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

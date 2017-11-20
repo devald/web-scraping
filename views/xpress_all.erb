@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Xpress TOP 100</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="bs-example" data-example-id="hoverable-table">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Cím</th>
+          <th>Eredeti cím</th>
+          <th>Borító</th>
+          <th>Ár</th>
+          <th>Részletek</th>
+          <th>Kosárba teszem</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @last_number.to_i.times do |i| %>
+
+        <% url = "#{@base_url}/xp/keres.asp?GOMB=60&KERES=5&TCS=10&PINF=1&MFID=10&NEV=&PRP=#{i.next}&TPO=1&RENDEZ=20&CSRKT=2" %>
+        <% html = Nokogiri::HTML(open(url)) %>
+        <% films = html.css('.kereslista') %>
+
+        <% films.each do |film| %>
+          <tr>
+            <th scope="row">#</th>
+            <td><%= film.at_css('.kerestermeknevkicsi').text %></td>
+            <td><%= film.at_css('.kerestermekeredetinevkicsi').text %></td>
+            <td><img src="<%= "#{@base_url}/#{film.at_css('.kerestermekkepsor img[2]')['src']}" %>"height="56"></td>
+            <td><%= film.at_css('.termekarkicsitext').text %></td>
+            <td><a href="<%= "#{@base_url}/xp/#{film.at_css('.reszletek a')['href']}" %>">Részletek</a></td>
+            <td><a href="<%= "#{@base_url}/xp/#{film.at_css('.kereslistarendelbox p a')['href']}" %>">Kosárba teszem</a></td>
+          </tr>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
